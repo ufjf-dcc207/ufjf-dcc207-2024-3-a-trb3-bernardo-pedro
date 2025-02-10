@@ -14,24 +14,21 @@ function App() {
   }
 
   // Avança para a próxima evolução da arma
-  function nextStage():void {
-  // Faz o ciclo de update da arma
-    switch(imagemArma){
-      case ArmasHades.Armas.Stygian.img:
-        setImagemArma(ArmasHades.Armas.Stygian.ev1);
-        break;
-      case ArmasHades.Armas.Stygian.ev1:
-        setImagemArma(ArmasHades.Armas.Stygian.ev2)
-        break;
-      case ArmasHades.Armas.Stygian.ev2:
-        setImagemArma(ArmasHades.Armas.Stygian.ev3)
-        break;
-      case ArmasHades.Armas.Stygian.ev3:
-        setImagemArma(ArmasHades.Armas.Stygian.img)
-        break;
-  }
+  function nextStage() {
+    const arma = ArmasHades.Armas[armaSelecionada];
 
-}
+    if (!arma) return;
+
+    const evolucoes = [arma.img, arma.ev1, arma.ev2, arma.ev3];
+    const indexAtual = evolucoes.indexOf(imagemArma);
+
+    // Avança no ciclo ou volta para o início
+    if (indexAtual === -1 || indexAtual === evolucoes.length - 1) {
+      setImagemArma(arma.img);
+    } else {
+      setImagemArma(evolucoes[indexAtual + 1]);
+    }
+  }
   
 
   return (
