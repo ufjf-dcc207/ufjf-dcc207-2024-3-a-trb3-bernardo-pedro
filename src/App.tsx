@@ -12,12 +12,21 @@ function App() {
     setImagem(ArmasHades.Armas[novaArma].img);
   }
 
+  function nextStage ()
+  {
+
+  }
+
   return (
     <>
       <div>Escolha sua arma</div>
       <select name="Arma" id="select" onChange={fazMudanca} value={armaSelecionada}>
         <option value="Stygian">Stygian</option>
         <option value="Varatha">Varatha</option>
+        <option value="Aegis">Aegis</option>
+        <option value="Coronacht">Coronacht</option>
+        <option value="Twin Fists">Twin Fists</option>
+        <option value="Exagryph">Exagryph</option>
       </select>
       <div className='imgArma'>
         {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}

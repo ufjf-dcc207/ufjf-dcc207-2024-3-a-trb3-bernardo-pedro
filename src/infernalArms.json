@@ -7,6 +7,22 @@
         "Varatha":{
             "nome":"Varatha, the Eternal Spear",
             "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Eternal_Spear.webp"
+        },
+        "Aegis":{
+            "nome":"Aegis, the Shield of Chaos",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Shield_of_Chaos.webp"
+        },
+        "Coronacht":{
+            "nome":"Coronacht, the Heart-Seeking Bow",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Heart-Seeker_Bow.webp"
+        },
+        "Twin Fists":{
+            "nome":"Twin Fists of Malphon",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Twin_Fists.webp"
+        },
+        "Exagryph":{
+            "nome":"Exagryph, the Adamant Rail",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Adamant_Rail.png"
         }
     }
 }
