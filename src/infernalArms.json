@@ -2,7 +2,10 @@
     "Armas":{
         "Stygian":{
             "nome":"Stygian, the Blade of the Underworld",
-            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Stygian_Blade.webp"
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Stygian_Blade.webp",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Stygian/Nemesis_Aspect_Sword.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Stygian/Poseidon_Aspect_Sword.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Stygian/Arthur_Aspect_Sword.webp"
         },
         "Varatha":{
             "nome":"Varatha, the Eternal Spear",

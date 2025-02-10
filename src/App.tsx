@@ -4,18 +4,35 @@ import './App.css'
 
 function App() {
   const [armaSelecionada, setArmaSelecionada] = useState("Stygian");
-  const [imagemArma, setImagem] = useState(ArmasHades.Armas[armaSelecionada].img);
+  const [imagemArma, setImagemArma] = useState(ArmasHades.Armas[armaSelecionada].img);
   
+  // Atualiza a arma selecionada
   function fazMudanca(event) {
     const novaArma = event.target.value;
     setArmaSelecionada(novaArma);
-    setImagem(ArmasHades.Armas[novaArma].img);
+    setImagemArma(ArmasHades.Armas[novaArma].img);
   }
 
-  function nextStage ()
-  {
-
+  // Avança para a próxima evolução da arma
+  function nextStage():void {
+  // Faz o ciclo de update da arma
+    switch(imagemArma){
+      case ArmasHades.Armas.Stygian.img:
+        setImagemArma(ArmasHades.Armas.Stygian.ev1);
+        break;
+      case ArmasHades.Armas.Stygian.ev1:
+        setImagemArma(ArmasHades.Armas.Stygian.ev2)
+        break;
+      case ArmasHades.Armas.Stygian.ev2:
+        setImagemArma(ArmasHades.Armas.Stygian.ev3)
+        break;
+      case ArmasHades.Armas.Stygian.ev3:
+        setImagemArma(ArmasHades.Armas.Stygian.img)
+        break;
   }
+
+}
+  
 
   return (
     <>
@@ -31,6 +48,7 @@ function App() {
       <div className='imgArma'>
         {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}
       </div>
+      <button onClick={nextStage}>Próxima evolução</button>
     </>
   );
 }
