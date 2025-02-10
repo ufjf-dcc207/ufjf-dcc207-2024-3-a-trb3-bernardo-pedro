@@ -1,0 +1,50 @@
+{
+    "Armas":{
+        "Stygian":{
+            "nome":"Stygian, the Blade of the Underworld",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Stygian_Blade.webp",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Stygian/Nemesis_Aspect_Sword.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Stygian/Poseidon_Aspect_Sword.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Stygian/Arthur_Aspect_Sword.webp"
+        },
+        "Varatha":{
+            "nome":"Varatha, the Eternal Spear",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Eternal_Spear.webp",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Varatha/Achilles_Aspect_Spear.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Varatha/Hades_Aspect_Spear.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Varatha/Guan_Yu_Aspect_Spear.webp"
+        },
+        "Aegis":{
+            "nome":"Aegis, the Shield of Chaos",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Shield_of_Chaos.webp",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Aegis/Chaos_Aspect_Shield.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Aegis/Zeus_Aspect_Shield.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Aegis/Beowulf_Aspect_Shield.webp"
+        
+        },
+        "Coronacht":{
+            "nome":"Coronacht, the Heart-Seeking Bow",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Heart-Seeker_Bow.webp",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Coronacht/Chiron_Aspect_Bow.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Coronacht/Rama_Aspect_Bow.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Coronacht/Hera_Aspect_Bow.webp"
+        
+        },
+        "Twin Fists":{
+            "nome":"Twin Fists of Malphon",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Twin_Fists.webp",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/TwinFists/Talos_Aspect.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/TwinFists/Demeter_Aspect.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/TwinFists/Gilgamesh_Aspect.webp"
+        
+        },
+        "Exagryph":{
+            "nome":"Exagryph, the Adamant Rail",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Adamant_Rail.png",
+            "ev1":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Exagryph/Eris_Aspect_Rail.webp",
+            "ev2":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Exagryph/Hestia_Aspect_Rail.webp",
+            "ev3":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/EvoArmas/Exagryph/Aspect_of_Lucifer.webp"
+        
+        }
+    }
+}
