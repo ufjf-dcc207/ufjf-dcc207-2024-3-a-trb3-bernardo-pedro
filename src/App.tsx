@@ -2,13 +2,15 @@ import { useState } from 'react';
 import ArmasHades from './infernalArms.json';
 import './App.css'
 
+type ArmaKey = keyof typeof ArmasHades.Armas;
+
 function App() {
-  const [armaSelecionada, setArmaSelecionada] = useState("Stygian");
+  const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>("Stygian");
   const [imagemArma, setImagemArma] = useState(ArmasHades.Armas[armaSelecionada].img);
   
   // Atualiza a arma selecionada
-  function fazMudanca(event) {
-    const novaArma = event.target.value;
+  function fazMudanca(event: React.ChangeEvent<HTMLSelectElement>) {
+    const novaArma = event.target.value as ArmaKey;;
     setArmaSelecionada(novaArma);
     setImagemArma(ArmasHades.Armas[novaArma].img);
   }
