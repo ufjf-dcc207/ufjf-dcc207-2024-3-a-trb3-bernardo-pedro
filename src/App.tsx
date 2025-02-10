@@ -7,13 +7,17 @@ import TitanBlood from './TitanBlood.tsx';
 type ArmaKey = keyof typeof ArmasHades.Armas;
 
 function App() {
+  //estado para nome da arma
   const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>("Stygian");
+  //estado para imagem da arma
   const [imagemArma, setImagemArma] = useState(ArmasHades.Armas[armaSelecionada].img);
+  //estado para quantidade de sangue
   const [quantidadeTitanBlood, setQuantidadeTitanBlood] = useState(30);
+  //estado para controle das evoluções
   const [etapa, setEtapa] = useState(0);
   
   // Atualiza a arma selecionada
-  function fazMudanca(event: React.ChangeEvent<HTMLSelectElement>) {
+  function atualizarArma(event: React.ChangeEvent<HTMLSelectElement>) {
     const novaArma = event.target.value as ArmaKey;;
     setArmaSelecionada(novaArma);
     setEtapa(0);
@@ -52,6 +56,7 @@ function App() {
     }
   }
   
+  //Funções para evoluções sob demanda
   function fazEvo1() {
     const arma = ArmasHades.Armas[armaSelecionada]
     if (etapa === 0 && quantidadeTitanBlood >= 5 ) {
@@ -87,6 +92,7 @@ function App() {
 
   }
 
+  //Adiciona +1 Titan Blood
   function carregaTB() {
     setQuantidadeTitanBlood(quantidadeTitanBlood + 1);
   }
@@ -94,7 +100,7 @@ function App() {
   return (
     <>
       <div>Escolha sua arma</div>
-      <select name="Arma" id="select" onChange={fazMudanca} value={armaSelecionada}>
+      <select name="Arma" id="select" onChange={atualizarArma} value={armaSelecionada}>
         <option value="Stygian">Stygian</option>
         <option value="Varatha">Varatha</option>
         <option value="Aegis">Aegis</option>
