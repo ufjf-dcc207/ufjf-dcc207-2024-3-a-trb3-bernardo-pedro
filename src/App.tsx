@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import ArmasHades from './infernalArms.json';
 import './App.css'
+import TitanBlood from './TitanBlood.tsx';
+
 //Adiciona tipo chave para o json
 type ArmaKey = keyof typeof ArmasHades.Armas;
 
 function App() {
   const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>("Stygian");
   const [imagemArma, setImagemArma] = useState(ArmasHades.Armas[armaSelecionada].img);
+  const [quantidadeTitanBlood, setQuantidadeTitanBlood] = useState(30);
   
   // Atualiza a arma selecionada
   function fazMudanca(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -62,6 +65,8 @@ function App() {
       <button onClick={fazEvo2}>Evo2</button>
       <button onClick={fazEvo3}>Evo3</button>
       <button onClick={nextStage}>Próxima evolução</button>
+
+      <TitanBlood img='/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/Adicionais/Titan_Blood.webp' quantidade={quantidadeTitanBlood}></TitanBlood>
     </>
   );
 }

@@ -1,0 +1,22 @@
+.TitanBloodContainer {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os ícones quebrem para a próxima linha */
+    gap: 10px; /* Espaçamento entre os ícones */
+    justify-content: center; /* Centraliza os elementos */
+    max-width: 500px; /* Ajuste o tamanho máximo conforme necessário */
+  }
+  
+  .TitanBlood {
+    width: 50px;  /* Ajuste o tamanho do ícone */
+    height: 50px;
+  }
+  
+  .TitanBlood img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gasto {
+    filter: grayscale(100%) opacity(50%); /* Aplica escala de cinza + reduz opacidade */
+  }
+  
