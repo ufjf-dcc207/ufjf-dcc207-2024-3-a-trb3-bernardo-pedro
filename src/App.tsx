@@ -9,7 +9,7 @@ type ArmaKey = keyof typeof ArmasHades.Armas;
 function App() {
   const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>("Stygian");
   const [imagemArma, setImagemArma] = useState(ArmasHades.Armas[armaSelecionada].img);
-  const [quantidadeTitanBlood, setQuantidadeTitanBlood] = useState(30);
+  const [quantidadeTitanBlood, setQuantidadeTitanBlood] = useState(10);
   
   // Atualiza a arma selecionada
   function fazMudanca(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -36,15 +36,25 @@ function App() {
   }
   
   function fazEvo1(){
+    if (quantidadeTitanBlood < 5) return;
     setImagemArma(ArmasHades.Armas[armaSelecionada].ev1);
+    setQuantidadeTitanBlood(quantidadeTitanBlood - 5);
   }
 
   function fazEvo2(){
+    if (quantidadeTitanBlood < 15) return;
     setImagemArma(ArmasHades.Armas[armaSelecionada].ev2);
+    setQuantidadeTitanBlood(quantidadeTitanBlood - 15);
   }
   
   function fazEvo3(){
+    if (quantidadeTitanBlood < 16) return;
     setImagemArma(ArmasHades.Armas[armaSelecionada].ev3);
+    setQuantidadeTitanBlood(quantidadeTitanBlood - 16);
+  }
+
+  function carregaTB() {
+    setQuantidadeTitanBlood(quantidadeTitanBlood + 1);
   }
 
   return (
@@ -64,6 +74,7 @@ function App() {
       <button onClick={fazEvo1}>Evo1</button>
       <button onClick={fazEvo2}>Evo2</button>
       <button onClick={fazEvo3}>Evo3</button>
+      <button onClick={carregaTB}>Carregar TB</button>
       <button onClick={nextStage}>Próxima evolução</button>
 
       <TitanBlood img='/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/Adicionais/Titan_Blood.webp' quantidade={quantidadeTitanBlood}></TitanBlood>
