@@ -1,0 +1,12 @@
+{
+    "Armas":{
+        "Stygian":{
+            "nome":"Stygian, the Blade of the Underworld",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Stygian_Blade.webp"
+        },
+        "Varatha":{
+            "nome":"Varatha, the Eternal Spear",
+            "img":"/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/ArmasZagreu/Eternal_Spear.webp"
+        }
+    }
+}
