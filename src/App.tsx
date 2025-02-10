@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ArmasHades from './infernalArms.json';
 import './App.css'
-
+//Adiciona tipo chave para o json
 type ArmaKey = keyof typeof ArmasHades.Armas;
 
 function App() {
@@ -32,6 +32,17 @@ function App() {
     }
   }
   
+  function fazEvo1(){
+    setImagemArma(ArmasHades.Armas[armaSelecionada].ev1);
+  }
+
+  function fazEvo2(){
+    setImagemArma(ArmasHades.Armas[armaSelecionada].ev2);
+  }
+  
+  function fazEvo3(){
+    setImagemArma(ArmasHades.Armas[armaSelecionada].ev3);
+  }
 
   return (
     <>
@@ -47,6 +58,9 @@ function App() {
       <div className='imgArma'>
         {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}
       </div>
+      <button onClick={fazEvo1}>Evo1</button>
+      <button onClick={fazEvo2}>Evo2</button>
+      <button onClick={fazEvo3}>Evo3</button>
       <button onClick={nextStage}>Próxima evolução</button>
     </>
   );
