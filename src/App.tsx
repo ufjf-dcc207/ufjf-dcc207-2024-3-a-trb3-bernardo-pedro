@@ -117,7 +117,7 @@ function App() {
       <button onClick={carregaTB}>Carregar TB</button>
       <button onClick={nextStage}>Próxima evolução</button>
 
-      <TitanBlood img='/ufjf-dcc207-2024-3-a-trb2-trb2-bernardo-pedro/src/assets/Adicionais/Titan_Blood.webp' quantidade={quantidadeTitanBlood}></TitanBlood>
+      <TitanBlood img='src/assets/Adicionais/Titan_Blood.webp' quantidade={quantidadeTitanBlood}></TitanBlood>
     </>
   );
 }
