@@ -70,7 +70,7 @@ function App() {
         setImagemArma(ArmasHades.Armas[novaArma].img);
       }
       else{
-        console.log("BOMBOCLAT");
+        console.log("BOMBOCLAT")
       }
 
     }
