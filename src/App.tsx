@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ArmasHades from "./infernalArms.json";
 import "./App.css";
 import TitanBlood from "./TitanBlood.tsx";
@@ -26,6 +26,8 @@ function App() {
   const [imagemArma, setImagemArma] = useState(
     ArmasHades.Armas[armaSelecionada].img
   );
+  //inicializa o inputRef
+  const inputRef = useRef<HTMLInputElement>(null);
   //inicializa um vetor vazio de progressoArma para guardar o progresso de cada arma
   const [progressoArma, setProgressoArma] = useState<ProgressoArma[]>([]);
   ///TODO adicionar setProgressoArma em tudo
@@ -49,17 +51,29 @@ function App() {
   }, [armaSelecionada, etapa, progressoArma]);
 
   // Atualiza a arma selecionada
-  function atualizarArma(event: React.ChangeEvent<HTMLSelectElement>) {
-    const novaArma = event.target.value as ArmaKey;
-    setArmaSelecionada(novaArma);
-    setEtapa(0);
-    const estadoPA: ProgressoArma = {
-      nome: novaArma,
-      evoAtual: etapa,
-      qntTB: quantidadeTitanBlood,
-    };
-    setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
-    setImagemArma(ArmasHades.Armas[novaArma].img);
+  function atualizarArma() {
+    if (inputRef.current && inputRef.current.value.trim() !== "")
+    {
+      const inputValue = inputRef.current.value.trim();
+      const armas = Object.keys(ArmasHades.Armas) as ArmaKey[];
+
+      if (armas.includes(inputValue as ArmaKey)) {
+        const novaArma = inputRef.current.value as ArmaKey;
+        setArmaSelecionada(novaArma);
+        setEtapa(0);
+        const estadoPA: ProgressoArma = {
+          nome: novaArma,
+          evoAtual: etapa,
+          qntTB: quantidadeTitanBlood,
+        };
+        setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
+        setImagemArma(ArmasHades.Armas[novaArma].img);
+      }
+      else{
+        console.log("BOMBOCLAT");
+      }
+
+    }
   }
 
   // Avança para a próxima evolução da arma
@@ -132,7 +146,11 @@ function App() {
   return (
     <>
       <div>Escolha sua arma</div>
-      <select
+
+      <input type="text" ref={inputRef} placeholder="Digite aqui o nome da arma" />
+      <button onClick={atualizarArma}>Executar</button>
+
+      {/* <select
         name="Arma"
         id="select"
         onChange={atualizarArma}
@@ -144,7 +162,8 @@ function App() {
         <option value="Coronacht">Coronacht</option>
         <option value="Twin Fists">Twin Fists</option>
         <option value="Exagryph">Exagryph</option>
-      </select>
+      </select> */}
+
       <div className="imgArma">
         {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}
       </div>
