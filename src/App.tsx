@@ -5,6 +5,12 @@ import TitanBlood from "./TitanBlood.tsx";
 
 //Adiciona tipo chave para o json
 type ArmaKey = keyof typeof ArmasHades.Armas;
+//Adiciona tipo para o progresso da arma
+type ProgressoArma = {
+  nome:string;
+  evoAtual: number;
+  qntTB:number;
+}
 
 function App() {
   //inicializa o estado com o valor salvo no localStorage, se não há, inicializa com valores iniciais
@@ -20,6 +26,9 @@ function App() {
   const [imagemArma, setImagemArma] = useState(
     ArmasHades.Armas[armaSelecionada].img
   );
+  //inicializa um vetor vazio de progressoArma para guardar o progresso de cada arma
+  const [progressoArma, setProgressoArma] = useState<ProgressoArma[]>([]);
+  ///TODO adicionar setProgressoArma em tudo
 
   //quando alguns dos estados abaixo é modificado, salva as alterações destes no localStorage
   useEffect(() => {
@@ -29,20 +38,27 @@ function App() {
       quantidadeTitanBlood.toString()
     );
     localStorage.setItem("etapa", etapa.toString());
-  }, [armaSelecionada, quantidadeTitanBlood, etapa]);
+    localStorage.setItem("armaSelecionada", progressoArma.toString());
+  }, [armaSelecionada, quantidadeTitanBlood, etapa, progressoArma]);
 
-  //atualiza interface para os valores corretos
+  //atualiza interface de usuário para os valores corretos
   useEffect(() => {
     const arma = ArmasHades.Armas[armaSelecionada];
     const evolucoes = [arma.img, arma.ev1, arma.ev2, arma.ev3];
     setImagemArma(evolucoes[etapa]);
-  }, [armaSelecionada, etapa]);
+  }, [armaSelecionada, etapa, progressoArma]);
 
   // Atualiza a arma selecionada
   function atualizarArma(event: React.ChangeEvent<HTMLSelectElement>) {
     const novaArma = event.target.value as ArmaKey;
     setArmaSelecionada(novaArma);
     setEtapa(0);
+    const estadoPA: ProgressoArma = {
+      nome: novaArma,
+      evoAtual: etapa,
+      qntTB: quantidadeTitanBlood,
+    };
+    setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
     setImagemArma(ArmasHades.Armas[novaArma].img);
   }
 
