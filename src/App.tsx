@@ -28,9 +28,40 @@ function App() {
   );
   //inicializa o inputRef
   const inputRef = useRef<HTMLInputElement>(null);
-  //inicializa um vetor vazio de progressoArma para guardar o progresso de cada arma
-  const [progressoArma, setProgressoArma] = useState<ProgressoArma[]>([]);
-  ///TODO adicionar setProgressoArma em tudo
+
+  //inicializa o progressoArma com o valor salvo no localStorage, se não há, inicializa com array vazio
+  const [progressoArma, setProgressoArma] = useState<ProgressoArma[]>(() => {
+    const savedProgresso = localStorage.getItem("progressoArma");
+    return savedProgresso ? JSON.parse(savedProgresso) : [];
+  });
+
+
+  //acha a arma salva e carrega ela, a etapa e a quantidade de Titan Blood salvas no localStorage
+  useEffect(() => {
+    const progressoSalvo = progressoArma.find((arma) => arma.nome === armaSelecionada);
+    if (progressoSalvo != null) {
+      setEtapa(progressoSalvo.evoAtual);
+      setQuantidadeTitanBlood(progressoSalvo.qntTB);
+    }
+  }, [armaSelecionada]);
+
+  //atualiza o progresso da arma quando a etapa ou a quantidade de Titan Blood é alterada em uma arma
+  useEffect(() => {
+    const novoProgressoArma = [...progressoArma];
+  
+    for (let i = 0; i < novoProgressoArma.length; i++) {
+      if (novoProgressoArma[i].nome === armaSelecionada) {
+
+        novoProgressoArma[i] = {
+          ...novoProgressoArma[i], 
+          evoAtual: etapa,
+          qntTB: quantidadeTitanBlood, 
+        };
+        break;
+      }
+    }
+    setProgressoArma(novoProgressoArma);
+  }, [etapa, quantidadeTitanBlood, armaSelecionada]);
 
   //quando alguns dos estados abaixo é modificado, salva as alterações destes no localStorage
   useEffect(() => {
@@ -40,7 +71,7 @@ function App() {
       quantidadeTitanBlood.toString()
     );
     localStorage.setItem("etapa", etapa.toString());
-    localStorage.setItem("armaSelecionada", progressoArma.toString());
+    localStorage.setItem("progressoArma", JSON.stringify(progressoArma));
   }, [armaSelecionada, quantidadeTitanBlood, etapa, progressoArma]);
 
   //atualiza interface de usuário para os valores corretos
@@ -48,31 +79,33 @@ function App() {
     const arma = ArmasHades.Armas[armaSelecionada];
     const evolucoes = [arma.img, arma.ev1, arma.ev2, arma.ev3];
     setImagemArma(evolucoes[etapa]);
-  }, [armaSelecionada, etapa, progressoArma]);
+  }, [armaSelecionada, etapa]);
 
   // Atualiza a arma selecionada
   function atualizarArma() {
-    if (inputRef.current && inputRef.current.value.trim() !== "")
-    {
+    if (inputRef.current && inputRef.current.value.trim() !== "") {
       const inputValue = inputRef.current.value.trim();
       const armas = Object.keys(ArmasHades.Armas) as ArmaKey[];
-
+  
       if (armas.includes(inputValue as ArmaKey)) {
         const novaArma = inputRef.current.value as ArmaKey;
         setArmaSelecionada(novaArma);
-        setEtapa(0);
-        const estadoPA: ProgressoArma = {
-          nome: novaArma,
-          evoAtual: etapa,
-          qntTB: quantidadeTitanBlood,
-        };
-        setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
+  
+        // Verifica se a arma já tem progresso salvo
+        const progressoExistente = progressoArma.find((arma) => arma.nome === novaArma);
+        if (!progressoExistente) {
+          const estadoPA: ProgressoArma = {
+            nome: novaArma,
+            evoAtual: 0,
+            qntTB: quantidadeTitanBlood,
+          };
+          setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
+        }
+  
         setImagemArma(ArmasHades.Armas[novaArma].img);
+      } else {
+        console.log("BOMBOCLAT");
       }
-      else{
-        console.log("BOMBOCLAT")
-      }
-
     }
   }
 
