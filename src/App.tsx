@@ -188,7 +188,7 @@ function App() {
       qntTB: QNTtb,
     }));
   
-    setArmaSelecionada(armaSelecionada);
+    setArmaSelecionada("Stygian");
     setQuantidadeTitanBlood(QNTtb);
     setEtapa(EVO);
     setImagemArma(IMG);
@@ -208,6 +208,9 @@ function App() {
     //console.log(progressoArma);
   }
 
+  function mostraBase(){
+    setImagemArma(ArmasHades.Armas[armaSelecionada].img);
+  }
   return (
     <>
       <div>Escolha sua arma</div>
@@ -232,13 +235,15 @@ function App() {
       <div className="imgArma">
         {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}
       </div>
-      <button onClick={fazEvo1}>Evo1</button>
-      <button onClick={fazEvo2}>Evo2</button>
-      <button onClick={fazEvo3}>Evo3</button>
-      <button onClick={carregaTB}>Carregar TB</button>
-      <button onClick={nextStage}>Próxima evolução</button>
-      <button onClick={resetPage}>Reset</button>
-
+      <div className="btnArea">
+        <button onClick={mostraBase}>Base</button>
+        <button onClick={fazEvo1}>Evo1</button>
+        <button onClick={fazEvo2}>Evo2</button>
+        <button onClick={fazEvo3}>Evo3</button>
+        <button onClick={carregaTB}>Carregar TB</button>
+        <button onClick={nextStage}>Próxima evolução</button>
+        <button onClick={resetPage}>Reset</button>
+      </div>
       <TitanBlood
         img="src/assets/Adicionais/Titan_Blood.webp"
         quantidade={quantidadeTitanBlood}
