@@ -176,6 +176,38 @@ function App() {
     setQuantidadeTitanBlood(quantidadeTitanBlood + 1);
   }
 
+  //volta estados ao inicio e exclui de localStorage
+  function resetPage() {
+    const QNTtb = 30;
+    const EVO = 0;
+    const IMG = ArmasHades.Armas[armaSelecionada].img;
+  
+    const novoProgressoArma = progressoArma.map((arma) => ({
+      ...arma,
+      evoAtual: EVO,
+      qntTB: QNTtb,
+    }));
+  
+    setArmaSelecionada(armaSelecionada);
+    setQuantidadeTitanBlood(QNTtb);
+    setEtapa(EVO);
+    setImagemArma(IMG);
+  
+    setProgressoArma(novoProgressoArma);
+  
+    localStorage.removeItem("armaSelecionada");
+    localStorage.removeItem("quantidadeTitanBlood");
+    localStorage.removeItem("etapa");
+    localStorage.removeItem("progressoArma");
+  
+    localStorage.setItem("armaSelecionada", armaSelecionada);
+    localStorage.setItem("quantidadeTitanBlood", QNTtb.toString());
+    localStorage.setItem("etapa", EVO.toString());
+    localStorage.setItem("progressoArma", JSON.stringify(novoProgressoArma));
+
+    //console.log(progressoArma);
+  }
+
   return (
     <>
       <div>Escolha sua arma</div>
@@ -205,6 +237,7 @@ function App() {
       <button onClick={fazEvo3}>Evo3</button>
       <button onClick={carregaTB}>Carregar TB</button>
       <button onClick={nextStage}>Próxima evolução</button>
+      <button onClick={resetPage}>Reset</button>
 
       <TitanBlood
         img="src/assets/Adicionais/Titan_Blood.webp"
