@@ -83,11 +83,46 @@ function App() {
 
   // Atualiza a arma selecionada
   function atualizarArma() {
+    //Verifica se o input não está vazio
     if (inputRef.current && inputRef.current.value.trim() !== "") {
+
+      //armazena o conteudo do input em variaveis
       const inputValue = inputRef.current.value.trim();
       const armas = Object.keys(ArmasHades.Armas) as ArmaKey[];
-  
-      if (armas.includes(inputValue as ArmaKey)) {
+
+      //verifica se alguma evolucao foi chamada no input
+      const evolucaoMatch = inputValue.match(/^(.*?)\s*(evolucao1|evolucao2|evolucao3)$/i);
+      if (evolucaoMatch) {
+        const nomeArma = evolucaoMatch[1].trim() as ArmaKey;
+        const evolucao = evolucaoMatch[2].toLowerCase();
+
+        // Se contém o nome da arma especificado
+        if (armas.includes(nomeArma)) {
+          setArmaSelecionada(nomeArma);
+          // Executa a evolução correspondente
+          if (evolucao === "evolucao1") {
+            fazEvo1();
+          } else if (evolucao === "evolucao2") {
+            fazEvo2();
+          } else if (evolucao === "evolucao3") {
+            fazEvo3();
+          }
+        }
+        //Se não, realiza apenas a evolucao da arma já selecionada
+        else if (!nomeArma)
+        {
+          if (evolucao === "evolucao1") {
+            fazEvo1();
+          } else if (evolucao === "evolucao2") {
+            fazEvo2();
+          } else if (evolucao === "evolucao3") {
+            fazEvo3();
+          }
+        }
+      }
+
+      //Caso não houver evolucoes e sim, apenas o nome da arma
+      else if (armas.includes(inputValue as ArmaKey)) {
         const novaArma = inputRef.current.value as ArmaKey;
         setArmaSelecionada(novaArma);
   
@@ -101,10 +136,11 @@ function App() {
           };
           setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
         }
-  
         setImagemArma(ArmasHades.Armas[novaArma].img);
-      } else {
-        console.log("BOMBOCLAT");
+      } 
+      
+      else {
+        console.log("Erro, Input inválido");
       }
     }
   }
@@ -218,19 +254,7 @@ function App() {
       <input type="text" ref={inputRef} placeholder="Digite aqui o nome da arma" />
       <button onClick={atualizarArma}>Executar</button>
 
-      {/* <select
-        name="Arma"
-        id="select"
-        onChange={atualizarArma}
-        value={armaSelecionada}
-      >
-        <option value="Stygian">Stygian</option>
-        <option value="Varatha">Varatha</option>
-        <option value="Aegis">Aegis</option>
-        <option value="Coronacht">Coronacht</option>
-        <option value="Twin Fists">Twin Fists</option>
-        <option value="Exagryph">Exagryph</option>
-      </select> */}
+      <div>{armaSelecionada}</div>
 
       <div className="imgArma">
         {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}
