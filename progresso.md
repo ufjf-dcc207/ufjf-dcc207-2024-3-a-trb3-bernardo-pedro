@@ -10,6 +10,8 @@
 
 * Deixar o nome de todas as armas para o usuário ver em algum canto.
 
+* Quando a pessoa pula uma evolução as outras ficam automaticamente disponíveis.(tp vai direto pra 3, 1 e 2 ficam disponiveis de graça).
+
 ### useEffect
 - [x] Sempre que o estado mudar, o efeito colateral desse hook será salvá-lo com **localStorage**.
 - [x] Resetar a página ao clicar em um botão.
