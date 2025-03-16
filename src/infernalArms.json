@@ -31,7 +31,7 @@
         
         },
         "Twin Fists":{
-            "nome":"Twin Fists of Malphon",
+            "nome":"Twin Fists, the fists of Malphon",
             "img":"/src/assets/ArmasZagreu/Twin_Fists.png",
             "ev1":"/src/assets/EvoArmas/TwinFists/Talos_Aspect.webp",
             "ev2":"/src/assets/EvoArmas/TwinFists/Demeter_Aspect.webp",

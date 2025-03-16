@@ -261,17 +261,29 @@ function App() {
       </div>
       <div className="btnArea">
         <button onClick={mostraBase}>Base</button>
-        <button onClick={fazEvo1}>Evo1</button>
-        <button onClick={fazEvo2}>Evo2</button>
-        <button onClick={fazEvo3}>Evo3</button>
+        <button onClick={fazEvo1}>Evolução1</button>
+        <button onClick={fazEvo2}>Evolução2</button>
+        <button onClick={fazEvo3}>Evolução3</button>
         <button onClick={carregaTB}>Carregar TB</button>
         <button onClick={nextStage}>Próxima evolução</button>
         <button onClick={resetPage}>Reset</button>
       </div>
+      
       <TitanBlood
         img="src/assets/Adicionais/Titan_Blood.webp"
         quantidade={quantidadeTitanBlood}
       ></TitanBlood>
+
+      <div className="armas-lista">
+        <h3>Armas Disponíveis</h3>
+        <ul>
+          {Object.keys(ArmasHades.Armas).map((arma) => (
+            <li key={arma}>
+              {ArmasHades.Armas[arma as ArmaKey].nome}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
