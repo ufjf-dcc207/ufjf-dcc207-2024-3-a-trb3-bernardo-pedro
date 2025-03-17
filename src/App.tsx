@@ -2,9 +2,12 @@ import { useEffect, useState, useRef, useReducer } from "react";
 import ArmasHades from "./infernalArms.json";
 import "./App.css";
 import TitanBlood from "./TitanBlood.tsx";
+import EvolucaoButtons from "./EvolucoesBtns.tsx";
+import ArmaDisplay from "./ArmaDisplay.tsx";
+import ArmasLista from "./ArmasLista.tsx";
 
 //Adiciona tipo chave para o json
-type ArmaKey = keyof typeof ArmasHades.Armas;
+export type ArmaKey = keyof typeof ArmasHades.Armas;
 //Adiciona tipo para o progresso da arma
 type ProgressoArma = {
   nome:string;
@@ -41,6 +44,7 @@ function App() {
   const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>(
     (localStorage.getItem("armaSelecionada") as ArmaKey) || "Stygian"
   );
+  //inicializa reducer qtb
   const [quantidadeTitanBlood, dispatch] = useReducer(qntTBReducer, parseInt(localStorage.getItem("quantidadeTitanBlood") || "30"));
   const [etapa, setEtapa] = useState(
     parseInt(localStorage.getItem("etapa") || "0")
@@ -279,41 +283,23 @@ function App() {
   }
   return (
     <>
-      <div>Escolha sua arma</div>
-
       <input type="text" ref={inputRef} placeholder="Digite aqui o nome da arma" />
       <button onClick={atualizarArma}>Executar</button>
-
-      <div>{armaSelecionada}</div>
-
-      <div className="imgArma">
-        {imagemArma && <img src={imagemArma} alt={armaSelecionada} />}
-      </div>
-      <div className="btnArea">
-        <button onClick={mostraBase}>Base</button>
-        <button onClick={fazEvo1}>Evolução1</button>
-        <button onClick={fazEvo2}>Evolução2</button>
-        <button onClick={fazEvo3}>Evolução3</button>
-        <button onClick={carregaTB}>Carregar TB</button>
-        <button onClick={nextStage}>Próxima evolução</button>
-        <button onClick={resetPage}>Reset</button>
-      </div>
-      
+      <ArmaDisplay imagemArma={imagemArma} armaSelecionada={armaSelecionada} />
+      <EvolucaoButtons
+        onMostraBase={mostraBase}
+        onFazEvo1={fazEvo1}
+        onFazEvo2={fazEvo2}
+        onFazEvo3={fazEvo3}
+        onCarregaTB={carregaTB}
+        onNextStage={nextStage}
+        onResetPage={resetPage}
+      />
       <TitanBlood
         img="src/assets/Adicionais/Titan_Blood.webp"
         quantidade={quantidadeTitanBlood}
-      ></TitanBlood>
-
-      <div className="armas-lista">
-        <h3>Armas Disponíveis</h3>
-        <ul>
-          {Object.keys(ArmasHades.Armas).map((arma) => (
-            <li key={arma}>
-              {ArmasHades.Armas[arma as ArmaKey].nome}
-            </li>
-          ))}
-        </ul>
-      </div>
+      />
+      <ArmasLista />
     </>
   );
 }
