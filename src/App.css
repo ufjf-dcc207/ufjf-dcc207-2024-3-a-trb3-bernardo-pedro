@@ -48,3 +48,9 @@
   margin: 5px 0;
   cursor: pointer;
 }
+
+#inputText{
+  width: 10em;
+  height: 2em;
+  font-size: medium;
+}

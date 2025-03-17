@@ -296,7 +296,7 @@ function App() {
   }
   return (
     <>
-      <input
+      <input id="inputText"
         type="text"
         ref={inputRef}
         placeholder="Digite aqui o nome da arma"
