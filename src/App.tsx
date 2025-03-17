@@ -12,12 +12,14 @@ type ProgressoArma = {
   qntTB:number;
 }
 
+//tipo de ação para reducer
 type Action = 
   | { type: 'INCREMENT' }
   | { type: 'DECREMENT'; payload: number }
   | { type: 'SET_TB'; payload:number}
   | { type: 'RESET' };
 
+//função para reducer
 function qntTBReducer(state: number, action: Action): number {
   switch (action.type) {
     case 'INCREMENT':
@@ -103,33 +105,26 @@ function App() {
 
   // Atualiza a arma selecionada
   function atualizarArma() {
-    //Verifica se o input não está vazio
+    // Verifica se o input não está vazio
     if (inputRef.current && inputRef.current.value.trim() !== "") {
-
-      //armazena o conteudo do input em variaveis
+      // Armazena o conteúdo do input em variáveis
       const inputValue = inputRef.current.value.trim();
       const armas = Object.keys(ArmasHades.Armas) as ArmaKey[];
-      const armasLowerCase =["stygian", "varatha", "aegis", "coronacht", "twin fists",  "exagryph"]; 
-      //verifica se alguma evolucao foi chamada no input
+      const armasLowerCase = ["stygian", "varatha", "aegis", "coronacht", "twin fists", "exagryph"];
+  
+      // Verifica se alguma evolução foi chamada no input
       const evolucaoMatch = inputValue.match(/^(.*?)\s*(evolucao1|evolucao2|evolucao3)$/i);
+  
       if (evolucaoMatch) {
-        const nomeArma = evolucaoMatch[1].trim().toLowerCase() as ArmaKey;
+        const nomeArma = evolucaoMatch[1].trim().toLowerCase();
         const evolucao = evolucaoMatch[2].toLowerCase();
-        for(let i=0; i<nomeArma.length;i++){
-          // Se contém o nome da arma especificado
-
-          if (nomeArma === armasLowerCase[i]){
-            setArmaSelecionada(armas[i]);
-            // Executa a evolução correspondente
-            if (evolucao === "evolucao1") {
-              fazEvo1();
-            } else if (evolucao === "evolucao2") {
-              fazEvo2();
-            } else if (evolucao === "evolucao3") {
-              fazEvo3();
-            }
-          }else if (!nomeArma)
-            {
+  
+        // Se o nome da arma foi especificado
+        if (nomeArma) {
+          for (let i = 0; i < armasLowerCase.length; i++) {
+            if (nomeArma === armasLowerCase[i]) {
+              setArmaSelecionada(armas[i]);
+              // Executa a evolução correspondente
               if (evolucao === "evolucao1") {
                 fazEvo1();
               } else if (evolucao === "evolucao2") {
@@ -137,20 +132,29 @@ function App() {
               } else if (evolucao === "evolucao3") {
                 fazEvo3();
               }
+              break;
             }
+          }
+        } else {
+          // Se o nome da arma não foi especificado, aplica a evolução na arma atual
+          if (evolucao === "evolucao1") {
+            fazEvo1();
+          } else if (evolucao === "evolucao2") {
+            fazEvo2();
+          } else if (evolucao === "evolucao3") {
+            fazEvo3();
+          }
         }
-
-        
-        
-      }//Caso não houver evolucoes e sim, apenas o nome da arma
+      }
+      // Caso não haja evoluções e sim, apenas o nome da arma
       else if (armasLowerCase.includes(inputValue.toLowerCase())) {
-        const novaArma = inputRef.current.value.toLowerCase() as ArmaKey;
-
-        for(let i=0;i<novaArma.length;i++)
-        {
-          if(novaArma === armasLowerCase[i]){
+        const novaArma = inputValue.toLowerCase() as ArmaKey;
+  
+        for (let i = 0; i < armasLowerCase.length; i++) {
+          if (novaArma === armasLowerCase[i]) {
             setArmaSelecionada(armas[i]);
-          } 
+            break;
+          }
         }
   
         // Verifica se a arma já tem progresso salvo
@@ -164,15 +168,11 @@ function App() {
           setProgressoArma((prevProgresso) => [...prevProgresso, estadoPA]);
         }
         setImagemArma(ArmasHades.Armas[novaArma].img);
-      } 
-      
-      else {
+      } else {
         console.log("Erro, Input inválido");
       }
     }
   }
-
-  // Avança para a próxima evolução da arma
   // Avança para a próxima evolução da arma
   function nextStage() {
     const arma = ArmasHades.Armas[armaSelecionada];
