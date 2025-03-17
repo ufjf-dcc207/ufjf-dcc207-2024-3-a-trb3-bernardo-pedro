@@ -13,11 +13,11 @@
 ### useEffect
 - [x] Sempre que o estado mudar, o efeito colateral desse hook será salvá-lo com **localStorage**.
 - [x] Resetar a página ao clicar em um botão.
-- [ ] Botão para forma base.
+- [x] Botão para forma base.
 ### useRef
   - [x] Colocar num input o nome das armas e usar esse hook para acessar diretamente o nome das armas, após uma verificação.
   - [ ] Deixar colocar o nome todo em maíusculo ou todo em minúsculo.
-  - [ ] Talvez colocar uns || com "Arco", "Espada"...etc.
+  - [x] Talvez colocar uns || com "Arco", "Espada"...etc.
 ### useReducer
-  - [ ] Usar o reducer para a manipulação (incremento, decremento e resetar) o TitanBlood.
+  - [x] Usar o reducer para a manipulação (incremento, decremento e resetar) o TitanBlood.
 

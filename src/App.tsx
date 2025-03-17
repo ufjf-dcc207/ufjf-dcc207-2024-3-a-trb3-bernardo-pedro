@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useReducer } from "react";
 import ArmasHades from "./infernalArms.json";
 import "./App.css";
 import TitanBlood from "./TitanBlood.tsx";
@@ -12,14 +12,34 @@ type ProgressoArma = {
   qntTB:number;
 }
 
+type Action = 
+  | { type: 'INCREMENT' }
+  | { type: 'DECREMENT'; payload: number }
+  | { type: 'SET_TB'; payload:number}
+  | { type: 'RESET' };
+
+function qntTBReducer(state: number, action: Action): number {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - action.payload;
+    case 'SET_TB':
+      return state = action.payload;
+    case 'RESET':
+      return 30;
+    default:
+      return state;
+  }
+}
+
+
 function App() {
   //inicializa o estado com o valor salvo no localStorage, se não há, inicializa com valores iniciais
   const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>(
     (localStorage.getItem("armaSelecionada") as ArmaKey) || "Stygian"
   );
-  const [quantidadeTitanBlood, setQuantidadeTitanBlood] = useState(
-    parseInt(localStorage.getItem("quantidadeTitanBlood") || "30")
-  );
+  const [quantidadeTitanBlood, dispatch] = useReducer(qntTBReducer, parseInt(localStorage.getItem("quantidadeTitanBlood") || "30"));
   const [etapa, setEtapa] = useState(
     parseInt(localStorage.getItem("etapa") || "0")
   );
@@ -41,7 +61,7 @@ function App() {
     const progressoSalvo = progressoArma.find((arma) => arma.nome === armaSelecionada);
     if (progressoSalvo != null) {
       setEtapa(progressoSalvo.evoAtual);
-      setQuantidadeTitanBlood(progressoSalvo.qntTB);
+      dispatch({ type: 'SET_TB', payload: progressoSalvo.qntTB }); 
     }
   }, [armaSelecionada]);
 
@@ -89,42 +109,49 @@ function App() {
       //armazena o conteudo do input em variaveis
       const inputValue = inputRef.current.value.trim();
       const armas = Object.keys(ArmasHades.Armas) as ArmaKey[];
-
+      const armasLowerCase =["stygian", "varatha", "aegis", "coronacht", "twin fists",  "exagryph"]; 
       //verifica se alguma evolucao foi chamada no input
       const evolucaoMatch = inputValue.match(/^(.*?)\s*(evolucao1|evolucao2|evolucao3)$/i);
       if (evolucaoMatch) {
-        const nomeArma = evolucaoMatch[1].trim() as ArmaKey;
+        const nomeArma = evolucaoMatch[1].trim().toLowerCase() as ArmaKey;
         const evolucao = evolucaoMatch[2].toLowerCase();
+        for(let i=0; i<nomeArma.length;i++){
+          // Se contém o nome da arma especificado
 
-        // Se contém o nome da arma especificado
-        if (armas.includes(nomeArma)) {
-          setArmaSelecionada(nomeArma);
-          // Executa a evolução correspondente
-          if (evolucao === "evolucao1") {
-            fazEvo1();
-          } else if (evolucao === "evolucao2") {
-            fazEvo2();
-          } else if (evolucao === "evolucao3") {
-            fazEvo3();
-          }
+          if (nomeArma === armasLowerCase[i]){
+            setArmaSelecionada(armas[i]);
+            // Executa a evolução correspondente
+            if (evolucao === "evolucao1") {
+              fazEvo1();
+            } else if (evolucao === "evolucao2") {
+              fazEvo2();
+            } else if (evolucao === "evolucao3") {
+              fazEvo3();
+            }
+          }else if (!nomeArma)
+            {
+              if (evolucao === "evolucao1") {
+                fazEvo1();
+              } else if (evolucao === "evolucao2") {
+                fazEvo2();
+              } else if (evolucao === "evolucao3") {
+                fazEvo3();
+              }
+            }
         }
-        //Se não, realiza apenas a evolucao da arma já selecionada
-        else if (!nomeArma)
+
+        
+        
+      }//Caso não houver evolucoes e sim, apenas o nome da arma
+      else if (armasLowerCase.includes(inputValue.toLowerCase())) {
+        const novaArma = inputRef.current.value.toLowerCase() as ArmaKey;
+
+        for(let i=0;i<novaArma.length;i++)
         {
-          if (evolucao === "evolucao1") {
-            fazEvo1();
-          } else if (evolucao === "evolucao2") {
-            fazEvo2();
-          } else if (evolucao === "evolucao3") {
-            fazEvo3();
-          }
+          if(novaArma === armasLowerCase[i]){
+            setArmaSelecionada(armas[i]);
+          } 
         }
-      }
-
-      //Caso não houver evolucoes e sim, apenas o nome da arma
-      else if (armas.includes(inputValue as ArmaKey)) {
-        const novaArma = inputRef.current.value as ArmaKey;
-        setArmaSelecionada(novaArma);
   
         // Verifica se a arma já tem progresso salvo
         const progressoExistente = progressoArma.find((arma) => arma.nome === novaArma);
@@ -146,29 +173,30 @@ function App() {
   }
 
   // Avança para a próxima evolução da arma
+  // Avança para a próxima evolução da arma
   function nextStage() {
     const arma = ArmasHades.Armas[armaSelecionada];
     const evolucoes = [arma.img, arma.ev1, arma.ev2, arma.ev3];
     const indexAtual = evolucoes.indexOf(imagemArma);
-
+  
     if (indexAtual === -1 || indexAtual === evolucoes.length - 1) {
       setImagemArma(arma.img);
       setEtapa(0);
-      setQuantidadeTitanBlood(30);
+      dispatch({ type: 'RESET' });
     } else {
       if (indexAtual === 0) {
         if (quantidadeTitanBlood < 5) return;
-        setQuantidadeTitanBlood(quantidadeTitanBlood - 5);
+        dispatch({ type: 'DECREMENT', payload: 5 });
         setImagemArma(evolucoes[indexAtual + 1]);
         setEtapa(1);
       } else if (indexAtual === 1) {
         if (quantidadeTitanBlood < 15) return;
-        setQuantidadeTitanBlood(quantidadeTitanBlood - 15);
+        dispatch({ type: 'DECREMENT', payload: 15 });
         setImagemArma(evolucoes[indexAtual + 1]);
         setEtapa(2);
       } else if (indexAtual === 2) {
         if (quantidadeTitanBlood < 16) return;
-        setQuantidadeTitanBlood(quantidadeTitanBlood - 16);
+        dispatch({ type: 'DECREMENT', payload: 16 });
         setImagemArma(evolucoes[indexAtual + 1]);
         setEtapa(3);
       }
@@ -179,27 +207,29 @@ function App() {
   function fazEvo1() {
     const arma = ArmasHades.Armas[armaSelecionada];
     if (etapa === 0 && quantidadeTitanBlood >= 5) {
-      setQuantidadeTitanBlood(quantidadeTitanBlood - 5);
+      dispatch({ type: 'DECREMENT', payload: 5 });
       setEtapa(1);
       setImagemArma(arma.ev1);
     } else if (etapa > 0) {
       setImagemArma(arma.ev1);
     }
   }
+  
   function fazEvo2() {
     const arma = ArmasHades.Armas[armaSelecionada];
     if (etapa <= 1 && quantidadeTitanBlood >= 15) {
-      setQuantidadeTitanBlood(quantidadeTitanBlood - 15);
+      dispatch({ type: 'DECREMENT', payload: 15 });
       setEtapa(2);
       setImagemArma(arma.ev2);
     } else if (etapa > 1) {
       setImagemArma(arma.ev2);
     }
   }
+  
   function fazEvo3() {
     const arma = ArmasHades.Armas[armaSelecionada];
     if (etapa <= 2 && quantidadeTitanBlood >= 16) {
-      setQuantidadeTitanBlood(quantidadeTitanBlood - 16);
+      dispatch({ type: 'DECREMENT', payload: 16 });
       setEtapa(3);
       setImagemArma(arma.ev3);
     } else if (etapa > 2) {
@@ -209,7 +239,7 @@ function App() {
 
   //Adiciona +1 Titan Blood
   function carregaTB() {
-    setQuantidadeTitanBlood(quantidadeTitanBlood + 1);
+    dispatch({ type: 'INCREMENT' });
   }
 
   //volta estados ao inicio e exclui de localStorage
@@ -225,7 +255,7 @@ function App() {
     }));
   
     setArmaSelecionada("Stygian");
-    setQuantidadeTitanBlood(QNTtb);
+    dispatch({ type: 'RESET' });
     setEtapa(EVO);
     setImagemArma(IMG);
   
