@@ -1,4 +1,3 @@
-// components/EvolucaoButtons.tsx
 type EvolucaoButtonsProps = {
     onMostraBase: () => void;
     onFazEvo1: () => void;

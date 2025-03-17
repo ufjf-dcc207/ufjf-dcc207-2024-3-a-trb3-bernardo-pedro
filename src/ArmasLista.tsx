@@ -1,4 +1,3 @@
-// components/ArmasLista.tsx
 import ArmasHades from "./infernalArms.json";
 import { ArmaKey } from "./App";
 

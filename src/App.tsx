@@ -8,50 +8,55 @@ import ArmasLista from "./ArmasLista.tsx";
 
 //Adiciona tipo chave para o json
 export type ArmaKey = keyof typeof ArmasHades.Armas;
+
 //Adiciona tipo para o progresso da arma
 type ProgressoArma = {
-  nome:string;
+  nome: string;
   evoAtual: number;
-  qntTB:number;
-}
+  qntTB: number;
+};
 
 //tipo de ação para reducer
-type Action = 
-  | { type: 'INCREMENT' }
-  | { type: 'DECREMENT'; payload: number }
-  | { type: 'SET_TB'; payload:number}
-  | { type: 'RESET' };
+type Action =
+  | { type: "INCREMENT" }
+  | { type: "DECREMENT"; payload: number }
+  | { type: "SET_TB"; payload: number }
+  | { type: "RESET" };
 
 //função para reducer
 function qntTBReducer(state: number, action: Action): number {
   switch (action.type) {
-    case 'INCREMENT':
+    case "INCREMENT":
       return state + 1;
-    case 'DECREMENT':
+    case "DECREMENT":
       return state - action.payload;
-    case 'SET_TB':
-      return state = action.payload;
-    case 'RESET':
+    case "SET_TB":
+      return (state = action.payload);
+    case "RESET":
       return 30;
     default:
       return state;
   }
 }
 
-
 function App() {
+  //inicializa reducer qtb
+  const [quantidadeTitanBlood, dispatch] = useReducer(
+    qntTBReducer,
+    parseInt(localStorage.getItem("quantidadeTitanBlood") || "30")
+  );
+  
   //inicializa o estado com o valor salvo no localStorage, se não há, inicializa com valores iniciais
   const [armaSelecionada, setArmaSelecionada] = useState<ArmaKey>(
     (localStorage.getItem("armaSelecionada") as ArmaKey) || "Stygian"
   );
-  //inicializa reducer qtb
-  const [quantidadeTitanBlood, dispatch] = useReducer(qntTBReducer, parseInt(localStorage.getItem("quantidadeTitanBlood") || "30"));
   const [etapa, setEtapa] = useState(
     parseInt(localStorage.getItem("etapa") || "0")
   );
   const [imagemArma, setImagemArma] = useState(
     ArmasHades.Armas[armaSelecionada].img
   );
+
   //inicializa o inputRef
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -61,46 +66,44 @@ function App() {
     return savedProgresso ? JSON.parse(savedProgresso) : [];
   });
 
-
-  //acha a arma salva e carrega ela, a etapa e a quantidade de Titan Blood salvas no localStorage
+  // salva o progresso quando a arma muda
   useEffect(() => {
-    const progressoSalvo = progressoArma.find((arma) => arma.nome === armaSelecionada);
+    const progressoSalvo = progressoArma.find(
+      (arma) => arma.nome === armaSelecionada
+    );
     if (progressoSalvo != null) {
       setEtapa(progressoSalvo.evoAtual);
-      dispatch({ type: 'SET_TB', payload: progressoSalvo.qntTB }); 
+      dispatch({ type: "SET_TB", payload: progressoSalvo.qntTB });
     }
   }, [armaSelecionada]);
 
-  //atualiza o progresso da arma quando a etapa ou a quantidade de Titan Blood é alterada em uma arma
+  // atualiza o progresso arma e salva no localStorage quando etapa, quantidadeTitanBlood ou armaSelecionada mudam
   useEffect(() => {
-    const novoProgressoArma = [...progressoArma];
-  
-    for (let i = 0; i < novoProgressoArma.length; i++) {
-      if (novoProgressoArma[i].nome === armaSelecionada) {
-
-        novoProgressoArma[i] = {
-          ...novoProgressoArma[i], 
+    const novoProgressoArma = progressoArma.map((arma) => {
+      if (arma.nome === armaSelecionada) {
+        return {
+          ...arma,
           evoAtual: etapa,
-          qntTB: quantidadeTitanBlood, 
+          qntTB: quantidadeTitanBlood,
         };
-        break;
+      } else {
+        return arma;
       }
-    }
-    setProgressoArma(novoProgressoArma);
-  }, [etapa, quantidadeTitanBlood, armaSelecionada]);
+    });
 
-  //quando alguns dos estados abaixo é modificado, salva as alterações destes no localStorage
-  useEffect(() => {
+    setProgressoArma(novoProgressoArma);
+
+    // salva no localStorage
     localStorage.setItem("armaSelecionada", armaSelecionada);
     localStorage.setItem(
       "quantidadeTitanBlood",
       quantidadeTitanBlood.toString()
     );
     localStorage.setItem("etapa", etapa.toString());
-    localStorage.setItem("progressoArma", JSON.stringify(progressoArma));
-  }, [armaSelecionada, quantidadeTitanBlood, etapa, progressoArma]);
+    localStorage.setItem("progressoArma", JSON.stringify(novoProgressoArma));
+  }, [etapa, quantidadeTitanBlood, armaSelecionada]);
 
-  //atualiza interface de usuário para os valores corretos
+  // atualiza interface do usuário quando armaSelecionada ou etapa mudam
   useEffect(() => {
     const arma = ArmasHades.Armas[armaSelecionada];
     const evolucoes = [arma.img, arma.ev1, arma.ev2, arma.ev3];
@@ -114,16 +117,24 @@ function App() {
       // Armazena o conteúdo do input em variáveis
       const inputValue = inputRef.current.value.trim();
       const armas = Object.keys(ArmasHades.Armas) as ArmaKey[];
-      const armasLowerCase = ["stygian", "varatha", "aegis", "coronacht", "twin fists", "exagryph"];
-  
-      // Verifica se alguma evolução foi chamada no input
-      const evolucaoMatch = inputValue.match(/^(.*?)\s*(evolucao1|evolucao2|evolucao3)$/i);
-  
+      const armasLowerCase = [
+        "stygian",
+        "varatha",
+        "aegis",
+        "coronacht",
+        "twin fists",
+        "exagryph",
+      ];
+
+      const evolucaoMatch = inputValue.match(
+        /^(.*?)\s*(evolucao1|evolucao2|evolucao3)$/i
+      );
+
       if (evolucaoMatch) {
         const nomeArma = evolucaoMatch[1].trim().toLowerCase();
         const evolucao = evolucaoMatch[2].toLowerCase();
-  
-        // Se o nome da arma foi especificado
+
+        // Se o nome da arma existe
         if (nomeArma) {
           for (let i = 0; i < armasLowerCase.length; i++) {
             if (nomeArma === armasLowerCase[i]) {
@@ -153,16 +164,18 @@ function App() {
       // Caso não haja evoluções e sim, apenas o nome da arma
       else if (armasLowerCase.includes(inputValue.toLowerCase())) {
         const novaArma = inputValue.toLowerCase() as ArmaKey;
-  
+
         for (let i = 0; i < armasLowerCase.length; i++) {
           if (novaArma === armasLowerCase[i]) {
             setArmaSelecionada(armas[i]);
             break;
           }
         }
-  
+
         // Verifica se a arma já tem progresso salvo
-        const progressoExistente = progressoArma.find((arma) => arma.nome === novaArma);
+        const progressoExistente = progressoArma.find(
+          (arma) => arma.nome === novaArma
+        );
         if (!progressoExistente) {
           const estadoPA: ProgressoArma = {
             nome: novaArma,
@@ -182,25 +195,25 @@ function App() {
     const arma = ArmasHades.Armas[armaSelecionada];
     const evolucoes = [arma.img, arma.ev1, arma.ev2, arma.ev3];
     const indexAtual = evolucoes.indexOf(imagemArma);
-  
+
     if (indexAtual === -1 || indexAtual === evolucoes.length - 1) {
       setImagemArma(arma.img);
       setEtapa(0);
-      dispatch({ type: 'RESET' });
+      dispatch({ type: "RESET" });
     } else {
       if (indexAtual === 0) {
         if (quantidadeTitanBlood < 5) return;
-        dispatch({ type: 'DECREMENT', payload: 5 });
+        dispatch({ type: "DECREMENT", payload: 5 });
         setImagemArma(evolucoes[indexAtual + 1]);
         setEtapa(1);
       } else if (indexAtual === 1) {
         if (quantidadeTitanBlood < 15) return;
-        dispatch({ type: 'DECREMENT', payload: 15 });
+        dispatch({ type: "DECREMENT", payload: 15 });
         setImagemArma(evolucoes[indexAtual + 1]);
         setEtapa(2);
       } else if (indexAtual === 2) {
         if (quantidadeTitanBlood < 16) return;
-        dispatch({ type: 'DECREMENT', payload: 16 });
+        dispatch({ type: "DECREMENT", payload: 16 });
         setImagemArma(evolucoes[indexAtual + 1]);
         setEtapa(3);
       }
@@ -211,29 +224,29 @@ function App() {
   function fazEvo1() {
     const arma = ArmasHades.Armas[armaSelecionada];
     if (etapa === 0 && quantidadeTitanBlood >= 5) {
-      dispatch({ type: 'DECREMENT', payload: 5 });
+      dispatch({ type: "DECREMENT", payload: 5 });
       setEtapa(1);
       setImagemArma(arma.ev1);
     } else if (etapa > 0) {
       setImagemArma(arma.ev1);
     }
   }
-  
+
   function fazEvo2() {
     const arma = ArmasHades.Armas[armaSelecionada];
     if (etapa <= 1 && quantidadeTitanBlood >= 15) {
-      dispatch({ type: 'DECREMENT', payload: 15 });
+      dispatch({ type: "DECREMENT", payload: 15 });
       setEtapa(2);
       setImagemArma(arma.ev2);
     } else if (etapa > 1) {
       setImagemArma(arma.ev2);
     }
   }
-  
+
   function fazEvo3() {
     const arma = ArmasHades.Armas[armaSelecionada];
     if (etapa <= 2 && quantidadeTitanBlood >= 16) {
-      dispatch({ type: 'DECREMENT', payload: 16 });
+      dispatch({ type: "DECREMENT", payload: 16 });
       setEtapa(3);
       setImagemArma(arma.ev3);
     } else if (etapa > 2) {
@@ -243,7 +256,7 @@ function App() {
 
   //Adiciona +1 Titan Blood
   function carregaTB() {
-    dispatch({ type: 'INCREMENT' });
+    dispatch({ type: "INCREMENT" });
   }
 
   //volta estados ao inicio e exclui de localStorage
@@ -251,25 +264,25 @@ function App() {
     const QNTtb = 30;
     const EVO = 0;
     const IMG = ArmasHades.Armas[armaSelecionada].img;
-  
+
     const novoProgressoArma = progressoArma.map((arma) => ({
       ...arma,
       evoAtual: EVO,
       qntTB: QNTtb,
     }));
-  
+
     setArmaSelecionada("Stygian");
-    dispatch({ type: 'RESET' });
+    dispatch({ type: "RESET" });
     setEtapa(EVO);
     setImagemArma(IMG);
-  
+
     setProgressoArma(novoProgressoArma);
-  
+
     localStorage.removeItem("armaSelecionada");
     localStorage.removeItem("quantidadeTitanBlood");
     localStorage.removeItem("etapa");
     localStorage.removeItem("progressoArma");
-  
+
     localStorage.setItem("armaSelecionada", armaSelecionada);
     localStorage.setItem("quantidadeTitanBlood", QNTtb.toString());
     localStorage.setItem("etapa", EVO.toString());
@@ -278,12 +291,16 @@ function App() {
     //console.log(progressoArma);
   }
 
-  function mostraBase(){
+  function mostraBase() {
     setImagemArma(ArmasHades.Armas[armaSelecionada].img);
   }
   return (
     <>
-      <input type="text" ref={inputRef} placeholder="Digite aqui o nome da arma" />
+      <input
+        type="text"
+        ref={inputRef}
+        placeholder="Digite aqui o nome da arma"
+      />
       <button onClick={atualizarArma}>Executar</button>
       <ArmaDisplay imagemArma={imagemArma} armaSelecionada={armaSelecionada} />
       <EvolucaoButtons

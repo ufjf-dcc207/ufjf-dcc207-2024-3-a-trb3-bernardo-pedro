@@ -1,4 +1,3 @@
-// components/ArmaDisplay.tsx
 type ArmaDisplayProps = {
     imagemArma: string;
     armaSelecionada: string;
